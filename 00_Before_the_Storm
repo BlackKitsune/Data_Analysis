@@ -1,0 +1,17 @@
+#++++++++ BEFORE THE STORM +++++++++++++++++++++++++++++++++++++++++
+
+## ANACONDA
+# https://conda.io/docs/user-guide/install/macos.html
+# https://www.continuum.io/downloads.
+coda list
+# Trobleshooting: "conda command not found" 
+
+Add export PATH="/Users/username/anaconda/bin:$PATH" to your .zsh_config file.
+# Install paclages
+conda install numpy
+
+# Conda virtual environment (isolate packages for projects)
+conda create -n my_env numpy
+
+
+
