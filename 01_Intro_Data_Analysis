@@ -7,3 +7,40 @@
 # Draw conclusions (statistics or machine learning)
 # Communicate (Blog, papper, email, powepoint, conversation)
 
+# Intro to Anaconda and Jupyter notebooks
+# Intro to Computer Science
+# Intro to Programming with Python
+
+## DATA ADQUISITION: Donwload, access API, Scraping web, combine data
+# Data format = CSV (Comma separated values)
+
+# Repressenting a CSV as a list of rows
+
+# Option 1: Each row is a list
+csv = [['A1', 'A2'], 
+       ['A3', 'A4']]
+
+# Option 2: Each row is a dictionary (with header)
+csv = [{'name1' : 'A1', 'name2' : 'A2'}, 
+       {'name3' : 'A3', 'name4' : 'A4'}]
+       
+# Code for reading a csv file and store each row
+import unicodecsv
+
+enrollments = []
+f = open('enrollments.csv', 'rb')
+reader = unicodecsv.DictReader(f)
+
+for row in reader:
+  enrollments.append(row)
+
+for row in reader:
+  print row
+  
+f.close()
+
+enrollments[0]
+
+# Avoid using close
+with open('enrollments.csv'
+
