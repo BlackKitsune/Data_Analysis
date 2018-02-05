@@ -24,39 +24,71 @@ csv = [['A1', 'A2'],
 csv = [{'name1' : 'A1', 'name2' : 'A2'}, 
        {'name3' : 'A3', 'name4' : 'A4'}]
        
-# Code for reading a csv file and store each row
+## Code for reading a csv file and store each row +++++++++++++++++++++++++++++
+
+# import unicodecsv
+
+# Option 1: open/close and for loop to create list
+#enrollments = []
+#f = open('enrollments.csv', 'rb')
+#reader = unicodecsv.DictReader(f)
+
+#for row in reader:
+#  enrollments.append(row)
+#  
+#f.close()
+#
+#print(enrollments[0])
+
+# Option 2: with open and list for creating the list
+#with open('enrollments.csv', 'rb') as f:
+#    reader = unicodecsv.DictReader(f)
+#    enrollments = list(reader)
+#
+#print(enrollments[0])
+
+## TEST READ CSV: Create a list for each of the variables +++++++++++++++++++++
+
 import unicodecsv
 
-enrollments = []
-f = open('enrollments.csv', 'rb')
-reader = unicodecsv.DictReader(f)
+enrollments_filename = '/Users/isabelfg/Documents/dataset/enrollments.csv'
 
-for row in reader:
-  enrollments.append(row)
+## Longer version of code (replaced with shorter, equivalent version below)
 
-for row in reader:
-  print row
-  
-f.close()
+# enrollments = []
+# f = open(enrollments_filename, 'rb')
+# reader = unicodecsv.DictReader(f)
+# for row in reader:
+#     enrollments.append(row)
+# f.close()
 
-enrollments[0]
+with open(enrollments_filename, 'rb') as f:
+    reader = unicodecsv.DictReader(f)
+    enrollments = list(reader)
 
-# Avoid using close
-import unicodecsv
+print(enrollments[0])
+    
+### Write code similar to the above to load the engagement
+### and submission data. The data is stored in files with
+### the given filenames. Then print the first row of each
+### table to make sure that your code works. You can use the
+### "Test Run" button to see the output of your code.
 
-enrollments = []
-with open('enrollments.csv', 'rb')
+engagement_filename = '/Users/isabelfg/Documents/dataset/daily_engagement.csv'
+submissions_filename = '/Users/isabelfg/Documents/dataset/project_submissions.csv'
+    
+#daily_engagement = None
+with open(engagement_filename, 'rb') as f:
+    reader = unicodecsv.DictReader(f)
+    daily_engagement = list(reader)
 
-reader = unicodecsv.DictReader(f)
+print(daily_engagement[0])
 
-for row in reader:
-  enrollments.append(row)
+#project_submissions = None
+with open(submissions_filename, 'rb') as f:
+    reader = unicodecsv.DictReader(f)
+    project_submissions = list(reader)
 
-for row in reader:
-  print row
-  
-f.close()
-
-enrollments[0]
+print(project_submissions[0])
 
 
