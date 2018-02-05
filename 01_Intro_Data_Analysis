@@ -42,5 +42,21 @@ f.close()
 enrollments[0]
 
 # Avoid using close
-with open('enrollments.csv'
+import unicodecsv
+
+enrollments = []
+with open('enrollments.csv', 'rb')
+
+reader = unicodecsv.DictReader(f)
+
+for row in reader:
+  enrollments.append(row)
+
+for row in reader:
+  print row
+  
+f.close()
+
+enrollments[0]
+
 
