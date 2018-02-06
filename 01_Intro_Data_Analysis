@@ -49,9 +49,9 @@ csv = [{'name1' : 'A1', 'name2' : 'A2'},
 
 ## TEST READ CSV: Create a list for each of the variables +++++++++++++++++++++
 
-import unicodecsv
+# import unicodecsv
 
-enrollments_filename = '/Users/isabelfg/Documents/dataset/enrollments.csv'
+# enrollments_filename = '/Users/isabelfg/Documents/dataset/enrollments.csv'
 
 ## Longer version of code (replaced with shorter, equivalent version below)
 
@@ -61,34 +61,112 @@ enrollments_filename = '/Users/isabelfg/Documents/dataset/enrollments.csv'
 # for row in reader:
 #     enrollments.append(row)
 # f.close()
+#
+#with open(enrollments_filename, 'rb') as f:
+#    reader = unicodecsv.DictReader(f)
+#    enrollments = list(reader)
+#
+#print(enrollments[0])
+#    
+#### Write code similar to the above to load the engagement
+#### and submission data. The data is stored in files with
+#### the given filenames. Then print the first row of each
+#### table to make sure that your code works. You can use the
+#### "Test Run" button to see the output of your code.
+#
+#engagement_filename = '/Users/isabelfg/Documents/dataset/daily_engagement.csv'
+#submissions_filename = '/Users/isabelfg/Documents/dataset/project_submissions.csv'
+#    
+##daily_engagement = None
+#with open(engagement_filename, 'rb') as f:
+#    reader = unicodecsv.DictReader(f)
+#    daily_engagement = list(reader)
+#
+#print(daily_engagement[0])
+#
+##project_submissions = None
+#with open(submissions_filename, 'rb') as f:
+#    reader = unicodecsv.DictReader(f)
+#    project_submissions = list(reader)
+#
+#print(project_submissions[0])
 
-with open(enrollments_filename, 'rb') as f:
-    reader = unicodecsv.DictReader(f)
-    enrollments = list(reader)
+## Option 3: Create a function to open the file 'filename':
+import unicodecsv
 
-print(enrollments[0])
-    
-### Write code similar to the above to load the engagement
-### and submission data. The data is stored in files with
-### the given filenames. Then print the first row of each
-### table to make sure that your code works. You can use the
-### "Test Run" button to see the output of your code.
+def read_csv(filename):
+    with open(filename, 'rb') as f:
+        reader = unicodecsv.DictReader(f)
+        return list(reader)
 
+enrollments_filename = '/Users/isabelfg/Documents/dataset/enrollments.csv'
 engagement_filename = '/Users/isabelfg/Documents/dataset/daily_engagement.csv'
 submissions_filename = '/Users/isabelfg/Documents/dataset/project_submissions.csv'
+
+enrollments = read_csv(enrollments_filename)
+daily_engagement = read_csv(engagement_filename)
+project_submissions = read_csv(submissions_filename)
+
+# print(enrollments[0])
+# print(project_submissions[0])
+# print(daily_engagement[0])
+
+## FIXING DATA TYPES: Transform data list from string --> format ++++++++++++++
+# CSV data does not identify waht type of variable and store it as string
+# Transform after importing the data better that when used in the code
+
+from datetime import datetime as dt
+
+# Function PARSE_DATE(DATE)
+# Takes a date as a string, and returns a Python datetime object.
+# If there is no date given, returns None
+
+def parse_date(date):
+    if date == '':
+        return None
+    else:
+        return dt.strptime(date, '%Y-%m-%d')
+
+# Function PARSE_MAYBE_INT(I)
+# Takes a string which is either an empty string or represents an integer
+# and returns an int or None.
+
+def parse_maybe_int(i):
+    if i == '':
+        return None
+    else:
+        return int(i)
+
+# Clean up the data types in the enrollments table
+        
+for enrollment in enrollments:
+    enrollment['cancel_date'] = parse_date(enrollment['cancel_date'])
+    enrollment['days_to_cancel'] = parse_maybe_int(enrollment['days_to_cancel'])
+    enrollment['is_canceled'] = enrollment['is_canceled'] == 'True'
+    enrollment['is_udacity'] = enrollment['is_udacity'] == 'True'
+    enrollment['join_date'] = parse_date(enrollment['join_date'])
     
-#daily_engagement = None
-with open(engagement_filename, 'rb') as f:
-    reader = unicodecsv.DictReader(f)
-    daily_engagement = list(reader)
+print(enrollments[0])
+
+# Clean up the data types in the engagement table
+
+for engagement_record in daily_engagement:
+    engagement_record['lessons_completed'] = int(float(engagement_record['lessons_completed']))
+    engagement_record['num_courses_visited'] = int(float(engagement_record['num_courses_visited']))
+    engagement_record['projects_completed'] = int(float(engagement_record['projects_completed']))
+    engagement_record['total_minutes_visited'] = float(engagement_record['total_minutes_visited'])
+    engagement_record['utc_date'] = parse_date(engagement_record['utc_date'])
 
 print(daily_engagement[0])
 
-#project_submissions = None
-with open(submissions_filename, 'rb') as f:
-    reader = unicodecsv.DictReader(f)
-    project_submissions = list(reader)
+# Clean up the data types in the submissions table
 
+for submission in project_submissions:
+    submission['completion_date'] = parse_date(submission['completion_date'])
+    submission['creation_date'] = parse_date(submission['creation_date'])
+    
 print(project_submissions[0])
+
+
 
 
