@@ -1,29 +1,3 @@
-#+++++++ INTRO TO DATA ANALYSIS ++++++++++++++++++++++++++++++++
-
-## DATA ANALYSIS PROCESS
-# Question
-# Wrangle (Data adquisition + cleaning)
-# Explore (Build intuition + find patterns)
-# Draw conclusions (statistics or machine learning)
-# Communicate (Blog, papper, email, powepoint, conversation)
-
-# Intro to Anaconda and Jupyter notebooks
-# Intro to Computer Science
-# Intro to Programming with Python
-
-## DATA ADQUISITION: Donwload, access API, Scraping web, combine data
-# Data format = CSV (Comma separated values)
-
-# Repressenting a CSV as a list of rows
-
-# Option 1: Each row is a list
-csv = [['A1', 'A2'], 
-       ['A3', 'A4']]
-
-# Option 2: Each row is a dictionary (with header)
-csv = [{'name1' : 'A1', 'name2' : 'A2'}, 
-       {'name3' : 'A3', 'name4' : 'A4'}]
-       
 ## Code for reading a csv file and store each row +++++++++++++++++++++++++++++
 
 # import unicodecsv
@@ -94,14 +68,16 @@ csv = [{'name1' : 'A1', 'name2' : 'A2'},
 ## Option 3: Create a function to open the file 'filename':
 import unicodecsv
 
+datadir = '/Users/isabelfg/Documents/dataset/'
+
 def read_csv(filename):
     with open(filename, 'rb') as f:
         reader = unicodecsv.DictReader(f)
         return list(reader)
 
-enrollments_filename = '/Users/isabelfg/Documents/dataset/enrollments.csv'
-engagement_filename = '/Users/isabelfg/Documents/dataset/daily_engagement.csv'
-submissions_filename = '/Users/isabelfg/Documents/dataset/project_submissions.csv'
+enrollments_filename = datadir + 'enrollments.csv'
+engagement_filename = datadir + 'daily_engagement.csv'
+submissions_filename = datadir + 'project_submissions.csv'
 
 enrollments = read_csv(enrollments_filename)
 daily_engagement = read_csv(engagement_filename)
@@ -132,7 +108,7 @@ def parse_date(date):
 # and returns an int or None.
 
 def parse_maybe_int(i):
-    if i == '':
+    if i == '': 
         return None
     else:
         return int(i)
@@ -167,6 +143,46 @@ for submission in project_submissions:
     
 print(project_submissions[0])
 
+### For each of these three tables, find the number of rows in the table and
+### the number of unique students in the table. To find the number of unique
+### students, you might want to create a set of the account keys in each table.
 
+# Number of rows in the list
+enrollment_num_rows = len(enrollments) 
+print('Number of rows in enrollments: ', enrollment_num_rows)
 
+# Number of unique students
+unique_enrolled_students = set()  # Create an empty set
+for enrollment in enrollments:    # Loop through the enrollments and...
+    # ... add the account key for each enrollment in the set
+    unique_enrolled_students.add(enrollment['account_key'])
+    
+# Take the number of unique students by the lengh of the array.
+# The reason of this two numbers being differnt is because students can enroll
+# then cancel and reenroll later
+enrollment_num_unique_students = len(unique_enrolled_students)
+print('Number of unique students: ', enrollment_num_unique_students)
+
+# Then if you check for the dayly enrollment there are a lot more, that makes
+# sense since it will be multiple entries for each student
+engagement_num_rows = len(daily_engagement) 
+print('Number of daily engagements: ', engagement_num_rows)
+
+unique_engagement_students = set()  
+for engagement_record in daily_engagement:  
+    unique_engagement_students.add(engagement_record['acct'])
+
+engagement_num_unique_students = len(unique_engagement_students)
+print('Number of unique students: ', engagement_num_unique_students)
+
+# Number of submissions
+submission_num_rows = len(project_submissions)
+print('Number of submissions: ', submission_num_rows)
+
+unique_project_submitters = set()  
+for project_submitter in project_submissions:  
+    unique_project_submitters.add(project_submitter['account_key'])
+
+submission_num_unique_students = len(unique_project_submitters)
+print('Number of projects submitted: ', submission_num_unique_students)
 
