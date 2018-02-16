@@ -147,42 +147,104 @@ print(project_submissions[0])
 ### the number of unique students in the table. To find the number of unique
 ### students, you might want to create a set of the account keys in each table.
 
-# Number of rows in the list
-enrollment_num_rows = len(enrollments) 
-print('Number of rows in enrollments: ', enrollment_num_rows)
+## Number of rows in the list
+#enrollment_num_rows = len(enrollments) 
+#print('Number of rows in enrollments: ', enrollment_num_rows)
+#
+## Number of unique students
+#unique_enrolled_students = set()  # Create an empty set
+#for enrollment in enrollments:    # Loop through the enrollments and...
+#    # ... add the account key for each enrollment in the set
+#    unique_enrolled_students.add(enrollment['account_key'])
+#    
+## Take the number of unique students by the lengh of the array.
+## The reason of this two numbers being differnt is because students can enroll
+## then cancel and reenroll later
+#enrollment_num_unique_students = len(unique_enrolled_students)
+#print('Number of unique students: ', enrollment_num_unique_students)
+#
+## Then if you check for the dayly enrollment there are a lot more, that makes
+## sense since it will be multiple entries for each student
+#engagement_num_rows = len(daily_engagement) 
+#print('Number of daily engagements: ', engagement_num_rows)
+#
+#unique_engagement_students = set()  
+#for engagement_record in daily_engagement:  
+#    unique_engagement_students.add(engagement_record['acct'])
+#
+#engagement_num_unique_students = len(unique_engagement_students)
+#print('Number of unique students: ', engagement_num_unique_students)
+#
+## Number of submissions
+#submission_num_rows = len(project_submissions)
+#print('Number of submissions: ', submission_num_rows)
+#
+#unique_project_submitters = set()  
+#for project_submitter in project_submissions:  
+#    unique_project_submitters.add(project_submitter['account_key'])
+#
+#submission_num_unique_students = len(unique_project_submitters)
+#print('Number of projects submitted: ', submission_num_unique_students)
 
-# Number of unique students
-unique_enrolled_students = set()  # Create an empty set
-for enrollment in enrollments:    # Loop through the enrollments and...
-    # ... add the account key for each enrollment in the set
-    unique_enrolled_students.add(enrollment['account_key'])
+## Update the code by doing a function that finds the unique elements
+
+# For that first we need to change the name of the column 'acct' of the
+# table daily engagement to 'account_key'
+
+# Check for every column in daily_engagement table the correct one
+for engagement_record in daily_engagement:
+    # copy the column into the new one...
+    engagement_record['account_key'] = engagement_record['acct']
+    # ... and remove the old column
+    del[engagement_record['acct']]
     
-# Take the number of unique students by the lengh of the array.
-# The reason of this two numbers being differnt is because students can enroll
-# then cancel and reenroll later
-enrollment_num_unique_students = len(unique_enrolled_students)
-print('Number of unique students: ', enrollment_num_unique_students)
+daily_engagement[0]['account_key']
 
-# Then if you check for the dayly enrollment there are a lot more, that makes
-# sense since it will be multiple entries for each student
-engagement_num_rows = len(daily_engagement) 
-print('Number of daily engagements: ', engagement_num_rows)
+def get_unique_students(data):
+    unique_students = set()
+    for data_point in data:
+        unique_students.add(data_point['account_key'])
+    return unique_students
 
-unique_engagement_students = set()  
-for engagement_record in daily_engagement:  
-    unique_engagement_students.add(engagement_record['acct'])
+print('Number of enrollments: ', len(enrollments))
+unique_enrolled_students = get_unique_students(enrollments)
+print('Number of unique enrolled students: ', len(unique_enrolled_students))
 
-engagement_num_unique_students = len(unique_engagement_students)
-print('Number of unique students: ', engagement_num_unique_students)
+print('Number of daily engagements: ', len(daily_engagement))
+unique_engagement_students = get_unique_students(daily_engagement)
+print('Number of unique engaged students: ', len(unique_engagement_students))
 
-# Number of submissions
-submission_num_rows = len(project_submissions)
-print('Number of submissions: ', submission_num_rows)
+print('Number of submissions: ', len(project_submissions))
+unique_project_submitters = get_unique_students(project_submissions)
+print('Number of unique projects sumited: ', len(unique_project_submitters))
 
-unique_project_submitters = set()  
-for project_submitter in project_submissions:  
-    unique_project_submitters.add(project_submitter['account_key'])
+# Now we check why the enrollments and engaments don't have the same number
+# of students
 
-submission_num_unique_students = len(unique_project_submitters)
-print('Number of projects submitted: ', submission_num_unique_students)
+# Check the enrollment list to find the students not present in the engagement
+for enrollment in enrollments:
+    # Take the student key from enrollments...
+    student = enrollment['account_key']
+    # ... and check if it is not between the unique students engaged
+    if student not in unique_engagement_students:
+        # if not then print the enrollment and break to see the results
+        print(enrollment)
+        break
+
+# The results show that the days to cancel are 0
+# rderedDict([('account_key', '1219'), 
+#             ('status', 'canceled'),
+#             ('join_date', datetime.datetime(2014, 11, 12, 0, 0)),
+#             ('cancel_date', datetime.datetime(2014, 11, 12, 0, 0)), 
+#             ('days_to_cancel', 0), 
+#             ('is_udacity', False), 
+#             ('is_canceled', True)])
+
+
+
+
+
+
+
+
 
